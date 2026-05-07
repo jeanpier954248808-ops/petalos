@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un ramo para ti</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Georgia, 'Times New Roman', serif;
+
+            background:
+                radial-gradient(circle at 50% 18%, rgba(255, 82, 140, 0.38), transparent 28%),
+                radial-gradient(circle at 15% 80%, rgba(255, 0, 90, 0.16), transparent 28%),
+                radial-gradient(circle at 85% 70%, rgba(180, 70, 255, 0.18), transparent 30%),
+                linear-gradient(135deg, #120617, #130d26, #07101f);
+        }
+
+        .scene {
+            position: relative;
+            width: 760px;
+            height: 760px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translateY(-15px);
+        }
+
+        .container {
+            position: relative;
+            width: 600px;
+            height: 800px;
+            transform: translateY(-40px) scale(0.62);
+            filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.55));
+        }
+
+        .glass {
+            position: absolute;
+            height: 800px;
+            width: 600px;
+            background: rgba(18, 33, 57, 0.72);
+            border-radius: 300px 300px 0px 0px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow:
+                inset 0 0 55px rgba(255, 255, 255, 0.04),
+                0 0 70px rgba(255, 80, 140, 0.18),
+                0 0 120px rgba(255, 30, 120, 0.08);
+            backdrop-filter: blur(7px);
+        }
+
+        .glass:before {
+            content: "";
+            height: 40px;
+            width: 40px;
+            transform-origin: center;
+            border: 25px solid rgba(18, 33, 57, 0.92);
+            border-radius: 100%;
+            position: absolute;
+            left: 256px;
+            top: -74px;
+            box-shadow:
+                0 0 28px rgba(255, 90, 150, 0.25),
+                inset 0 0 12px rgba(255, 255, 255, 0.04);
+        }
+
+        .glass:after {
+            content: "";
+            position: absolute;
+            height: 16px;
+            width: 600px;
+            background: linear-gradient(90deg, #89192e, #ff5365, #89192e);
+            top: 100%;
+            left: 0%;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 0 28px rgba(255, 85, 120, 0.55);
+        }
+
+        .shine {
+            width: 26px;
+            height: 330px;
+            background: white;
+            opacity: 0.22;
+            position: absolute;
+            left: 85%;
+            top: 200px;
+            border-radius: 100px;
+            z-index: 10;
+        }
+
+        .shine:before {
+            content: "";
+            width: 26px;
+            height: 40px;
+            position: absolute;
+            background: white;
+            top: 365px;
+            border-radius: 100px;
+        }
+
+        .petals > div {
+            position: absolute;
+            background: #d52d58;
+            width: 85px;
+            height: 120px;
+            top: 200px;
+            transition: all 0.5s ease-out;
+        }
+
+        .petals > div:nth-child(1) {
+            border-radius: 15px;
+            box-shadow: 0px 0px 75px rgba(255, 150, 190, 1);
+            left: 268px;
+            top: 200px;
+            background: linear-gradient(135deg, #ff6f9e, #d52d58);
+            animation: glowing 2.5s ease-in-out infinite;
+        }
+
+        .petals > div:nth-child(2),
+        .petals > div:nth-child(4),
+        .petals > div:nth-child(6) {
+            background: #b81b43;
+            left: 230px;
+            border-radius: 0px 50px 0px 50px;
+            transform-origin: bottom right;
+        }
+
+        .petals > div:nth-child(3),
+        .petals > div:nth-child(5),
+        .petals > div:nth-child(7) {
+            background: #b81b43;
+            left: 300px;
+            border-radius: 50px 0px 50px 0px;
+            transform-origin: bottom left;
+        }
+
+        .petals > div:nth-child(2) {
+            z-index: 5;
+            background: #c71f4d;
+            top: 218px;
+            height: 130px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
+            animation: bloom2 3s ease-in-out forwards;
+        }
+
+        .petals > div:nth-child(3) {
+            z-index: 4;
+            background: #c71f4d;
+            top: 218px;
+            height: 130px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
+            animation: bloom3 3s ease-in-out forwards, glowing 2.5s ease-in-out infinite;
+        }
+
+        .petals > div:nth-child(4) {
+            z-index: 3;
+            background: #d3315f;
+            top: 213px;
+            height: 135px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
+            animation: bloom4 3s ease-in-out forwards, glowing 2.5s ease-in-out infinite;
+        }
+
+        .petals > div:nth-child(5) {
+            z-index: 2;
+            background: #d3315f;
+            top: 213px;
+            height: 135px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
+            animation: bloom5 3s ease-in-out forwards, glowing 2.5s ease-in-out infinite;
+        }
+
+        .petals > div:nth-child(6) {
+            z-index: 1;
+            background: #e63b68;
+            top: 200px;
+            height: 130px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .3);
+            animation: bloom6 3s ease-in-out forwards, glowing 2.5s ease-in-out infinite;
+        }
+
+        .petals > div:nth-child(7) {
+            z-index: 0;
+            background: #e63b68;
+            top: 200px;
+            height: 130px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .3);
+            animation: bloom7 3s ease-in-out forwards, glowing 2.5s ease-in-out infinite;
+        }
+
+        .deadPetals > div {
+            position: absolute;
+            background: #d52d58;
+            width: 85px;
+            height: 60px;
+            top: 200px;
+            border-radius: 0px 60px 0px 60px;
+            box-shadow: 0px 0px 30px rgba(245, 148, 184, .35);
+            transition: all 0.5s ease-out;
+        }
+
+        .deadPetals > div:nth-child(1) {
+            left: 95px;
+            transform: rotate(-28deg);
+            animation: falling 20s 4s ease-in-out infinite;
+        }
+
+        .deadPetals > div:nth-child(2) {
+            left: 135px;
+            transform: rotate(-12deg);
+            animation: falling2 20s 8s ease-in-out infinite;
+        }
+
+        .deadPetals > div:nth-child(3) {
+            left: 410px;
+            transform: rotate(25deg);
+            animation: falling3 20s 12s ease-in-out infinite;
+        }
+
+        .deadPetals > div:nth-child(4) {
+            left: 455px;
+            transform: rotate(40deg);
+            animation: falling4 20s 16s ease-in-out infinite;
+        }
+
+        .leaves > div:nth-last-child(1) {
+            position: absolute;
+            width: 55px;
+            height: 30px;
+            background: #338f37;
+            top: 334px;
+            left: 278px;
+            border-radius: 100px;
+        }
+
+        .leaves > div:nth-child(1) {
+            position: absolute;
+            width: 15px;
+            height: 390px;
+            background: linear-gradient(#0a7a0a, #044604);
+            top: 308px;
+            left: 300px;
+            border-radius: 0 0 100px 100px;
+        }
+
+        .leaves > div:nth-child(2) {
+            position: absolute;
+            width: 60px;
+            height: 100px;
+            border-radius: 10px 80px 40px 80px;
+            background: #054c05;
+            transform-origin: bottom;
+            transform: rotate(-30deg);
+            top: 412px;
+            left: 254px;
+            box-shadow: inset 10px 10px #0b7a0b;
+        }
+
+        .leaves > div:nth-child(3) {
+            position: absolute;
+            width: 60px;
+            height: 100px;
+            border-radius: 80px 1px 80px 40px;
+            background: #054c05;
+            transform-origin: bottom;
+            transform: rotate(30deg);
+            top: 360px;
+            left: 300px;
+            box-shadow: inset -10px 10px #0b7a0b;
+        }
+
+        .thorns > div {
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: 200px;
+        }
+
+        .thorns > div:nth-child(odd) {
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 15px solid #054c05;
+            left: 315px;
+        }
+
+        .thorns > div:nth-child(even) {
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-right: 15px solid #054c05;
+            left: 285px;
+        }
+
+        .thorns > div:nth-child(1) {
+            top: 465px;
+        }
+
+        .thorns > div:nth-child(2) {
+            top: 390px;
+        }
+
+        .thorns > div:nth-child(4) {
+            top: 525px;
+        }
+
+        .message {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            text-align: center;
+            color: #fff;
+            font-size: 31px;
+            font-weight: bold;
+            line-height: 1.3;
+            z-index: 30;
+            text-shadow:
+                0 0 8px rgba(255, 100, 150, 0.9),
+                0 0 22px rgba(255, 100, 150, 0.55),
+                2px 2px 8px rgba(0, 0, 0, 0.85);
+            animation: aparecer 2s ease forwards;
+        }
+
+        .heart {
+            display: inline-block;
+            animation: latido 1.2s infinite;
+            filter: drop-shadow(0 0 12px rgba(255, 70, 120, 1));
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: #ff5c93;
+            font-size: 25px;
+            opacity: 0.85;
+            animation: flotar 6s linear infinite;
+            text-shadow: 0 0 12px rgba(255, 90, 150, 0.8);
+        }
+
+        .floating-heart:nth-child(1) {
+            left: 10%;
+            bottom: 150px;
+            animation-delay: 0s;
+        }
+
+        .floating-heart:nth-child(2) {
+            left: 86%;
+            bottom: 220px;
+            animation-delay: 2s;
+        }
+
+        .floating-heart:nth-child(3) {
+            left: 78%;
+            bottom: 100px;
+            animation-delay: 4s;
+        }
+
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd1dc;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff9fbd;
+            animation: brillar 3s infinite ease-in-out;
+        }
+
+        .star:nth-child(4) {
+            top: 12%;
+            left: 18%;
+            animation-delay: 0.5s;
+        }
+
+        .star:nth-child(5) {
+            top: 25%;
+            left: 82%;
+            animation-delay: 1.2s;
+        }
+
+        .star:nth-child(6) {
+            top: 70%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+
+        .star:nth-child(7) {
+            top: 62%;
+            left: 90%;
+            animation-delay: 2.6s;
+        }
+
+        @keyframes bloom2 {
+            50% {
+                transform: rotate(-90deg);
+                top: 400px;
+                left: 150px;
+            }
+
+            100% {
+                transform: rotate(-60deg);
+                top: 615px;
+                left: 100px;
+                background: #71122a;
+                box-shadow: 0px 0px 0px rgba(245, 148, 184, 0);
+            }
+        }
+
+        @keyframes bloom3 {
+            100% {
+                transform: rotate(50deg);
+            }
+        }
+
+        @keyframes bloom4 {
+            100% {
+                transform: rotate(-25deg);
+            }
+        }
+
+        @keyframes bloom5 {
+            100% {
+                transform: rotate(25deg);
+            }
+        }
+
+        @keyframes bloom6 {
+            100% {
+                transform: rotate(-10deg);
+            }
+        }
+
+        @keyframes bloom7 {
+            100% {
+                transform: rotate(10deg);
+            }
+        }
+
+        @keyframes glowing {
+            50% {
+                background: #ff4f81;
+                box-shadow: 0px 0px 80px rgba(255, 155, 195, 1);
+            }
+        }
+
+        @keyframes falling {
+            20% {
+                top: 635px;
+                background: #8b1432;
+                box-shadow: none;
+            }
+
+            100% {
+                top: 635px;
+                opacity: 0;
+            }
+        }
+
+        @keyframes falling2 {
+            20% {
+                top: 655px;
+                background: #8b1432;
+                box-shadow: none;
+            }
+
+            100% {
+                top: 655px;
+                opacity: 0;
+            }
+        }
+
+        @keyframes falling3 {
+            20% {
+                top: 620px;
+                background: #8b1432;
+                box-shadow: none;
+            }
+
+            100% {
+                top: 620px;
+                opacity: 0;
+            }
+        }
+
+        @keyframes falling4 {
+            20% {
+                top: 660px;
+                background: #8b1432;
+                box-shadow: none;
+            }
+
+            100% {
+                top: 660px;
+                opacity: 0;
+            }
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        @keyframes latido {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.25);
+            }
+        }
+
+        @keyframes flotar {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.85;
+            }
+
+            100% {
+                transform: translateY(-280px) scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes brillar {
+            0%, 100% {
+                opacity: 0.25;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.8);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .scene {
+                width: 100vw;
+                height: 100vh;
+                transform: translateY(-10px);
+            }
+
+            .container {
+                transform: translateY(-55px) scale(0.50);
+            }
+
+            .message {
+                bottom: 110px;
+                font-size: 24px;
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                transform: translateY(-50px) scale(0.43);
+            }
+
+            .message {
+                bottom: 105px;
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="scene">
+        <span class="floating-heart">❤</span>
+        <span class="floating-heart">❤</span>
+        <span class="floating-heart">❤</span>
+
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+        <span class="star"></span>
+
+        <div class="container">
+            <div class="glass">
+                <div class="shine"></div>
+            </div>
+
+            <div class="thorns">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div class="leaves">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div class="petals">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div class="deadPetals">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+        <h4 class="message">
+            Mi amor por ti durará hasta que caiga el último pétalo
+            <span class="heart">❤️</span>
+        </h4>
+    </div>
+
+</body>
+
+</html>
